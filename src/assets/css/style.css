@@ -1,0 +1,38 @@
+/* 相当于全局变量 */
+:root {
+    --row: 10;
+    --column: 10;
+}
+#game-grid {
+    /* 布局模式 */
+    display:grid;
+    /* 重复10行 */
+    grid-template-rows: repeat(var(--row),2rem); 
+    grid-template-columns: repeat(var(--column),2rem);
+}
+
+header, .flex {
+    display: flex;
+}
+
+
+.game-over {
+    /* 禁止用户鼠标事件 */
+    pointer-events: none;
+}
+
+.grid-item {
+    border: solid 1px #eee;
+    justify-content: center;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+}
+
+.grid-item:not(.opened) {
+    background-color: #ddd;
+    border-top-color: #eee;
+    border-left-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+}
