@@ -4,10 +4,21 @@
         @contextmenu="onRightClick"
         @dblclick="onDoubleClick"
     >
-        <template v-if="isFlag">旗</template>
+        <template v-if="isFlag">
+            <img src="../assets/img/horn.png" style="width: 100%;"/>
+        </template>
         <template v-else-if="isOpen">
-            <template v-if="isBomb">蛋</template>
-            <template v-else>{{ count ? count : '' }}</template>
+            <template v-if="isBomb">
+                <img src="../assets/img/bomb.png" style="width: 100%;height: 100%;background-color:black;" />
+            </template>
+            <template v-else-if="count">
+                <div color="white">
+                    {{ count }}
+                </div>
+            </template>
+            <template v-else>
+                <div style="background-color: #3b3b3b;width: 100%;height: 100%;"></div>
+            </template>
         </template>
     </div>
 </template>

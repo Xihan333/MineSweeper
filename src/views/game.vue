@@ -1,12 +1,7 @@
 <template>
+    <div class="game-style">
     <header>
-        <button type="button" @click="doStartGame">开始游戏</button>
-        <div class="flex" @change="onLevelChange">
-            <label v-for="(config, key) in Levels" :key="key">
-                <input type="radio" name="level" :value="key" v-model="level" />
-                {{ key }}
-            </label>
-        </div>
+        <button type="button" @click="doStartGame">重新开始</button>
         <div>
             <strong>{{ time }} s</strong>  /
             <span>最佳纪录： {{ store.records[level] !== 0 ? store.records[level] : '暂无' }}</span>
@@ -27,6 +22,7 @@
             {{ item ? 1 : '' }}
         </grid-item>
     </div>
+    </div>
 </template>
 
 <script setup>
@@ -35,12 +31,14 @@ import GridItem from '../components/grid-item.vue'
 import JSConfetti from 'js-confetti'
 import { Levels } from '../data'
 import { useStore } from '../store/counter'
+import router from '@/router'
 
 const store = useStore();
 
 let isRealStart = false  //判断用户是否有过点击
 let interval   //计时器
-const level = ref('Easy')
+const level = store.degree
+console.log(level)
 const row = ref(10)
 const column = ref(10)
 const bombNum = ref(10)
@@ -199,54 +197,30 @@ function onItemOpenAll(item,index) {
 
 //监听难度选择
 function onLevelChange() {
-    console.log(level.value)
-    console.log(Levels['Easy'])
-    row.value = Levels[level.value].row
-    column.value = Levels[level.value].column
-    bombNum.value = Levels[level.value].bombNum
+    console.log(level.name)
+    if(level.name === '') {
+        router.push('/')
+    }
+    else if(level.name === 'Self'){
+        row.value = Levels[level.row].row
+        column.value = Levels[level.column].column
+        bombNum.value = Levels[level.bombNum].bombNum
+    }
+    else {
+        row.value = Levels[level.name].row
+        column.value = Levels[level.name].column
+        bombNum.value = Levels[level.name].bombNum
+    }
     doStartGame(true)
 }
 
-doStartGame();
+onLevelChange();
 </script>
 
-<!-- <style scoped>
-/* 相当于全局变量 */
-:root {
-    --row: 10;
-    --column: 10;
+<style scoped>
+.game-style {
+    height: 100vh;
+    /* background: url("../assets/img/buoux.png") center center no-repeat; */
+    background-size: 100% 100%;
 }
-#game-grid {
-    /* 布局模式 */
-    display:grid;
-    /* 重复10行 */
-    grid-template-rows: repeat(var(--row),2rem); 
-    grid-template-columns: repeat(var(--column),2rem);
-}
-
-header, .flex {
-    display: flex;
-}
-
-
-.game-over {
-    /* 禁止用户鼠标事件 */
-    pointer-events: none;
-}
-
-.grid-item {
-    border: solid 1px #eee;
-    justify-content: center;
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-}
-
-.grid-item:not(.opened) {
-    background-color: #ddd;
-    border-top-color: #eee;
-    border-left-color: #eee;
-    border-right-color: #ccc;
-    border-bottom-color: #ccc;
-}
-</style> -->
+</style>

@@ -20,5 +20,19 @@ export const useStore = defineStore('store', () => {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(records))
   }
 
-  return { records , setRecord }
+  const degree = ref({
+    name:'Easy',
+    row:10,
+    column:10,
+    bombNum:10,
+  })
+
+  function setDegree(name,row=10,column=10,bombNum=10) {
+    degree.value.name = name
+    degree.value.row = row
+    degree.value.column = column
+    degree.value.bombNum = bombNum
+  }
+
+  return { records , setRecord , degree, setDegree }
 })

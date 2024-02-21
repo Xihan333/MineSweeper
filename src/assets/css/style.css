@@ -7,8 +7,8 @@
     /* 布局模式 */
     display:grid;
     /* 重复10行 */
-    grid-template-rows: repeat(var(--row),2rem); 
-    grid-template-columns: repeat(var(--column),2rem);
+    grid-template-rows: repeat(var(--row),4rem); 
+    grid-template-columns: repeat(var(--column),4rem);
 }
 
 header, .flex {
@@ -22,17 +22,23 @@ header, .flex {
 }
 
 .grid-item {
-    border: solid 1px #eee;
+    border: solid 0.5px #aeacac;
     justify-content: center;
     display: flex;
     cursor: pointer;
     align-items: center;
+    /* position: relative; */
+    /* background-color: #ccc; */
+    background: url('../../number.png') center center;
+    background-size: 100% 100%;
+    color: rgb(192, 192, 192);
 }
 
 .grid-item:not(.opened) {
-    background-color: #ddd;
+    background-color: #a4a4a4;
     border-top-color: #eee;
     border-left-color: #eee;
     border-right-color: #ccc;
     border-bottom-color: #ccc;
+    background-image: none;
 }
