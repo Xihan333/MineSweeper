@@ -7,6 +7,9 @@
         <template v-if="isFlag">
             <img src="../assets/img/horn.png" style="width: 100%;"/>
         </template>
+        <template v-else-if="flagNotBomb">
+            <img src="../assets/img/flagNotBomb.png" style="width: 100%;height: 100%;"/>
+        </template>
         <template v-else-if="isOpen">
             <template v-if="isBomb">
                 <img src="../assets/img/bomb.png" style="width: 100%;height: 100%;background-color:black;" />
@@ -37,7 +40,8 @@ const { count , isBomb } = toRefs(props)
 const isOpen = ref(false)
 //是否插旗
 const isFlag = ref(false)
-
+//插了旗但不是雷
+const flagNotBomb = ref(false)
 function onClick() {
     open()
 }
@@ -59,6 +63,7 @@ function onRightClick(event) {
 function reset() {
     isFlag.value = false;
     isOpen.value = false;
+    flagNotBomb.value = false;
 }
 
 //双击操作
@@ -67,9 +72,14 @@ function onDoubleClick(event) {
     if(!isOpen.value) return;  //方块未展开
     emit('openAll')
 }
+
+function noBombFlag() {
+    flagNotBomb.value = true
+    isFlag.value = false
+}
 //将reset暴露给父组件
 defineExpose({
-    reset,open,isFlag
+    reset,open,isFlag,noBombFlag
 })
 </script>
 

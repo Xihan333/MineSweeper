@@ -2,19 +2,44 @@
 :root {
     --row: 10;
     --column: 10;
+    --long:4rem
+}
+@font-face {
+    font-family: electronicFont;
+    src: url(../font/DS-DIGIT.ttf);
 }
 #game-grid {
     /* 布局模式 */
     display:grid;
     /* 重复10行 */
-    grid-template-rows: repeat(var(--row),4rem); 
-    grid-template-columns: repeat(var(--column),4rem);
+    grid-template-rows: repeat(var(--row),var(--long)); 
+    grid-template-columns: repeat(var(--column),var(--long));
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 header, .flex {
     display: flex;
 }
 
+.number {
+    font-size: 100px;
+    color: #d7afc4;
+    font-family: electronicFont;
+    font-weight: bold;
+    position: absolute;
+    margin-top: 70px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.restart img{
+    position: absolute;
+    margin-top: 35px;
+    right: 70px;
+}
 
 .game-over {
     /* 禁止用户鼠标事件 */

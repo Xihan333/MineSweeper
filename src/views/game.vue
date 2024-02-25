@@ -1,12 +1,17 @@
 <template>
     <div class="game-style">
     <header>
-        <button type="button" @click="doStartGame">重新开始</button>
-        <div>
-            <strong>{{ time }} s</strong>  /
-            <span>最佳纪录： {{ store.records[level] !== 0 ? store.records[level] : '暂无' }}</span>
+        <div class="back" @click="goBack">
+            <img src="../assets/img/back.png" style="width: 60px; height: 60px;margin-left: 25px;margin-top: 25px;"/>
+        </div>
+        <div class="number">
+           {{ time }} 
+        </div>
+        <div class="restart" @click="doStartGame">
+            <img src="../assets/img/restart.png" style="width: 60px;height: 60px;"/>
         </div>
     </header>
+    <span>最佳纪录： {{ store.records[level] !== 0 ? store.records[level] : '暂无' }}</span>
 
     <div id="game-grid" :class="{'game-over' : isGameOver}" :style="gridStyle">
         <grid-item 
@@ -44,7 +49,7 @@ const column = ref(10)
 const bombNum = ref(10)
 const isGameOver = ref(false)
 const grid = ref(null)
-const gridItems = ref()
+const gridItems = ref([])
 const opened = ref(0)  //计数器
 const time = ref(0)
 const isSuccess = ref(false)
@@ -56,7 +61,12 @@ const total = computed(() => {
 
 
 const gridStyle = computed(() => {
-    return `--row:${row.value};--column:${column.value}`
+    if(level === 'Easy') {
+        const long = '5rem'
+        return `--row:${row.value};--column:${column.value};--long:${long}`
+    }
+    else
+        return `--row:${row.value};--column:${column.value}`
 })
 
 //成功的烟花
@@ -79,6 +89,7 @@ function doStartGame() {
         }
     })
     //重置每个小格子
+    console.log(gridItems)
     if (event) {
         for (const item of gridItems.value) {
             item.reset()
@@ -154,9 +165,12 @@ function onItemOpen(item,index) {
 
 function openAllBomb() {
     grid.value.forEach((item,index) => {
+        const gridItem = gridItems.value[index]
         if(item.isBomb) {
-            const gridItem = gridItems.value[index]
             gridItem.open()
+        }
+        else if(!item.isBomb && gridItem.isFlag){
+            gridItem.noBombFlag()
         }
     })
 }
@@ -206,6 +220,17 @@ function onItemOpenAll(item,index) {
     }
 }
 
+function goBack() {
+    isRealStart = false  //判断用户是否有过点击
+    clearInterval(interval)
+    isGameOver.value = false
+    grid.value = null
+    gridItems.value = ''
+    isSuccess.value = false
+    isFail.value = false
+    router.push('/')
+}
+
 //监听难度选择
 function onLevelChange() {
     console.log(level.name)
@@ -231,7 +256,8 @@ onLevelChange();
 <style scoped>
 .game-style {
     height: 100vh;
-    /* background: url("../assets/img/buoux.png") center center no-repeat; */
+    /* background: url("../assets/img/gameBG.jpg") center center no-repeat;  */
+    background-color: black;
     background-size: 100% 100%;
 }
 </style>
