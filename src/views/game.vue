@@ -139,6 +139,8 @@ function onItemOpen(item,index) {
     }
     //如果是雷，游戏结束
     if (grid.value[index].isBomb){
+        //展开所有雷
+        openAllBomb()   
         stopGame()
         return;
     }
@@ -148,6 +150,15 @@ function onItemOpen(item,index) {
     }
     //不是雷，调用递归开启方块
     openGridItem(item,index)
+}
+
+function openAllBomb() {
+    grid.value.forEach((item,index) => {
+        if(item.isBomb) {
+            const gridItem = gridItems.value[index]
+            gridItem.open()
+        }
+    })
 }
 function onItemFlag(item,index) {
 

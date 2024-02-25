@@ -10,7 +10,7 @@
       <div class="box" @click="goGame('Hard')">
         <img src="../assets/img/Hard.png" />
       </div>
-      <div class="box">
+      <div class="box" @click="">
         <img src="../assets/img/Self.png" />
       </div>
     </div>
