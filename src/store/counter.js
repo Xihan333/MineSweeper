@@ -21,10 +21,10 @@ export const useStore = defineStore('store', () => {
   }
 
   const degree = ref({
-    name:'Easy',
-    row:10,
+    name:'Self',
+    row:12,
     column:10,
-    bombNum:10,
+    bombNum:50,
   })
 
   function setDegree(name,row=10,column=10,bombNum=10) {

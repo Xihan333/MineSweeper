@@ -4,8 +4,29 @@
         <div class="back" @click="goBack">
             <img src="../assets/img/back.png" style="width: 60px; height: 60px;margin-left: 25px;margin-top: 25px;"/>
         </div>
+        <div class="degree">
+            难度<br/>
+            <span style="font-size: 40px;">{{ level.name === 'Self' ? '`${level.row}` × `${level.column}`' : level.name }}</span>
+        </div>
+        <div class="bestRecord">
+            最佳纪录<br/>
+            <span style="font-size: 40px;">{{ store.records[level.name] !== 0 ? store.records[level.name] : '暂无' }}</span>
+        </div>
+        <div class="leftBombNum" >
+            剩余雷数<br/>
+            <span style="font-size: 40px;">{{ isGameOver ? 'GAME OVER' : leftBombNum }}</span>
+        </div>
         <div class="number">
            {{ time }} 
+        </div>
+        <div class="rules">
+            RULES: 
+            <div>
+                鼠标单击探查  右键单击标记地雷/取消标记
+            <img src="../assets/img/horn.png" style="height: 20px;" />
+            注意不要点开熊熊炸弹  
+            <img src="../assets/img/bomb.png" style="height: 20px;" /> 
+            </div>
         </div>
         <div class="restart" @click="doStartGame">
             <img src="../assets/img/restart.png" style="width: 60px;height: 60px;"/>
@@ -21,7 +42,7 @@
             :count="item.count" 
             :is-bomb="item.isBomb"
             @open="onItemOpen(item,index)"
-            @flag="onItemFlag(item,index)"
+            @flag="onItemFlag($event,item,index,)"
             @open-all="onItemOpenAll(item,index)"
         >
             {{ item ? 1 : '' }}
@@ -57,6 +78,7 @@ const isFail = ref(false)
 const total = computed(() => {
     return row.value * column.value
 })
+const leftBombNum = ref(bombNum.value)
 
 
 
@@ -78,6 +100,7 @@ function doStartGame() {
     opened.value = time.value = 0
     isSuccess.value = isFail.value = null
     isGameOver.value = isRealStart =  false
+    leftBombNum.value = bombNum.value
     const arr = []
     for(let i = 0;i < total.value ; i++){
         arr.push(0)
@@ -174,8 +197,9 @@ function openAllBomb() {
         }
     })
 }
-function onItemFlag(item,index) {
-
+function onItemFlag(num,item,index) {
+    if(num) leftBombNum.value -= 1;
+    else leftBombNum.value += 1;
 }
 
 function openGridItem(item,index) {
@@ -220,6 +244,7 @@ function onItemOpenAll(item,index) {
     }
 }
 
+//返回主页
 function goBack() {
     isRealStart = false  //判断用户是否有过点击
     clearInterval(interval)
@@ -238,9 +263,9 @@ function onLevelChange() {
         router.push('/')
     }
     else if(level.name === 'Self'){
-        row.value = Levels[level.row].row
-        column.value = Levels[level.column].column
-        bombNum.value = Levels[level.bombNum].bombNum
+        row.value = level.row
+        column.value = level.column
+        bombNum.value = level.bombNum
     }
     else {
         row.value = Levels[level.name].row
