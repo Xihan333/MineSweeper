@@ -10,19 +10,23 @@
       <div class="box" @click="goGame('Hard')">
         <img src="../assets/img/Hard.png" />
       </div>
-      <div class="box" @click="">
+      <div class="box" @click="modalShow = true">
         <img src="../assets/img/Self.png" />
       </div>
     </div>
+    <selfModal v-if="modalShow" @close="modalShow = false"/>
 </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useStore } from '@/store/counter';
+import selfModal from '@/components/self-modal.vue';
 import router from '@/router';
 
 const store = useStore()
+
+const modalShow = ref(false)
 
 function goGame(item) {
   store.setDegree(item)

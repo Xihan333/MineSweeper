@@ -6,11 +6,11 @@
         </div>
         <div class="degree">
             难度<br/>
-            <span style="font-size: 40px;">{{ level.name === 'Self' ? '`${level.row}` × `${level.column}`' : level.name }}</span>
+            <span style="font-size: 40px;">{{ level.name === 'Self' ? selfDegree : level.name }}</span>
         </div>
         <div class="bestRecord">
             最佳纪录<br/>
-            <span style="font-size: 40px;">{{ store.records[level.name] !== 0 ? store.records[level.name] : '暂无' }}</span>
+            <span style="font-size: 40px;">{{ store.records[level.name] !== 0 && store.records[level.name] ? store.records[level.name] : 'NULL' }}</span>
         </div>
         <div class="leftBombNum" >
             剩余雷数<br/>
@@ -32,7 +32,6 @@
             <img src="../assets/img/restart.png" style="width: 60px;height: 60px;"/>
         </div>
     </header>
-    <span>最佳纪录： {{ store.records[level] !== 0 ? store.records[level] : '暂无' }}</span>
 
     <div id="game-grid" :class="{'game-over' : isGameOver}" :style="gridStyle">
         <grid-item 
@@ -79,7 +78,7 @@ const total = computed(() => {
     return row.value * column.value
 })
 const leftBombNum = ref(bombNum.value)
-
+const selfDegree = ref('')  //自定义难度时的难度显示字符串
 
 
 const gridStyle = computed(() => {
@@ -160,8 +159,8 @@ function stopGame(isWin = false) {
         jsConfetti.addConfetti({
             confettiNumber : 500
         })
-        if (time.value < store.records[level.value] || store.records[level.value] === 0) {
-            store.setRecord(level.value, time.value)
+        if (time.value < store.records[level.name] || store.records[level.name] === 0) {
+            store.setRecord(level.name, time.value)
         }
     } else {
         isFail.value = true
@@ -266,6 +265,7 @@ function onLevelChange() {
         row.value = level.row
         column.value = level.column
         bombNum.value = level.bombNum
+        selfDegree.value = row.value + '×' + column.value
     }
     else {
         row.value = Levels[level.name].row
