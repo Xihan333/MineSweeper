@@ -1,5 +1,8 @@
 <template>
 <div class="home">
+    <div class="logo">
+      <img src="../assets/img/logo.png" />
+    </div>
     <div class="container">
       <div class="box" @click="goGame('Easy')">
         <img src="../assets/img/Esay.png" />
@@ -46,11 +49,20 @@ function goGame(item) {
 }.container {
   position: absolute;
   bottom: 100px;
-  right: 150px;
+  right: 200px;
 }
 .box {
   position: relative;
   margin: 10px;
+}
+.logo {
+  position: absolute;
+  margin: 10px;
+  right: 80px;
+  top: 100px;
+}
+.logo img {
+  height: 400px;
 }
 .highlight {
   border-color: blue; /* Highlight color */
