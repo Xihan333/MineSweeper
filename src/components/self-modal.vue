@@ -22,6 +22,7 @@
 import { ref } from 'vue';
 import { useStore } from '@/store/counter';
 import router from '@/router';
+import { ElMessage } from 'element-plus'
 
 const row = ref()
 const column = ref()
@@ -32,19 +33,31 @@ const emit = defineEmits(['close' ])
 
 function selfSubmit() {
     if (row.value < 9 || row.value > 30) {
-        alert('列数不符合规定')
+        ElMessage({
+            message: '列数不符合规定',
+            type: 'warning',
+        })
         return
     }
     if (column.value < 9 || column.value > 16) {
-        alert('行数不符合规定')
+        ElMessage({
+            message: '行数不符合规定',
+            type: 'warning',
+        })
         return
     }
     if (bombNum.value < 0)  {
-        alert('请输入正确的地雷数')
+        ElMessage({
+            message: '请输入正确的地雷数',
+            type: 'warning',
+        })
         return
     }
     else if ( bombNum.value > row.value*column.value/2 ) {
-        alert('不建议雷数超过总格数的一半')
+        ElMessage({
+            message: '不建议雷数超过总格数的一半',
+            type: 'warning',
+        })
         return
     }
 

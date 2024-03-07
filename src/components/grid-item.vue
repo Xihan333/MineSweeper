@@ -11,7 +11,10 @@
             <img src="../assets/img/flagNotBomb.png" style="width: 100%;height: 100%;"/>
         </template>
         <template v-else-if="isOpen">
-            <template v-if="isBomb">
+            <template v-if="isBlast">
+                <img src="../assets/img/bomb.png" style="width: 100%;height: 100%;background-color:#d7afc4;" />
+            </template>
+            <template v-else-if="isBomb">
                 <img src="../assets/img/bomb.png" style="width: 100%;height: 100%;background-color:black;" />
             </template>
             <template v-else-if="count">
@@ -42,6 +45,8 @@ const isOpen = ref(false)
 const isFlag = ref(false)
 //插了旗但不是雷
 const flagNotBomb = ref(false)
+//炸了
+const isBlast = ref(false)
 function onClick() {
     open()
 }
@@ -64,6 +69,7 @@ function reset() {
     isFlag.value = false;
     isOpen.value = false;
     flagNotBomb.value = false;
+    isBlast.value = false;
 }
 
 //双击操作
@@ -77,9 +83,13 @@ function noBombFlag() {
     flagNotBomb.value = true
     isFlag.value = false
 }
+
+function blast() {
+    isBlast.value = true
+}
 //将reset暴露给父组件
 defineExpose({
-    reset,open,isFlag,noBombFlag
+    reset,open,isFlag,noBombFlag,blast
 })
 </script>
 

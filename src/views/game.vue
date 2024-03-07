@@ -2,19 +2,19 @@
     <div class="game-style">
     <header>
         <div class="back" @click="goBack">
-            <img src="../assets/img/back.png" style="width: 60px; height: 60px;margin-left: 25px;margin-top: 25px;"/>
+            <img src="../assets/img/back.png" style="width: 40px; height: 40px;margin-left: 25px;margin-top: 25px;"/>
         </div>
         <div class="degree">
             难度<br/>
-            <span style="font-size: 40px;">{{ level.name === 'Self' ? selfDegree : level.name }}</span>
+            <span style="font-size: 30px;">{{ level.name === 'Self' ? selfDegree : level.name }}</span>
         </div>
         <div class="bestRecord">
             最佳纪录<br/>
-            <span style="font-size: 40px;">{{ store.records[level.name] !== 0 && store.records[level.name] ? store.records[level.name] : 'NULL' }}</span>
+            <span style="font-size: 30px;">{{ store.records[level.name] !== 0 && store.records[level.name] ? store.records[level.name] : 'NULL' }}</span>
         </div>
         <div class="leftBombNum" >
             剩余雷数<br/>
-            <span style="font-size: 40px;">{{ isGameOver ? 'GAME OVER' : leftBombNum }}</span>
+            <span style="font-size: 30px;">{{ isGameOver ? 'GAME OVER' : leftBombNum }}</span>
         </div>
         <div class="number">
            {{ time }} 
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="restart" @click="doStartGame">
-            <img src="../assets/img/restart.png" style="width: 60px;height: 60px;"/>
+            <img src="../assets/img/restart.png" style="width: 40px;height: 40px;"/>
         </div>
     </header>
 
@@ -57,6 +57,8 @@ import JSConfetti from 'js-confetti'
 import { Levels } from '../data'
 import { useStore } from '../store/counter'
 import router from '@/router'
+import { ElMessage } from 'element-plus'
+
 
 const store = useStore();
 
@@ -100,6 +102,7 @@ function doStartGame() {
     isSuccess.value = isFail.value = null
     isGameOver.value = isRealStart =  false
     leftBombNum.value = bombNum.value
+    blasted.value = false
     const arr = []
     for(let i = 0;i < total.value ; i++){
         arr.push(0)
@@ -162,19 +165,33 @@ function stopGame(isWin = false) {
         if (time.value < store.records[level.name] || store.records[level.name] === 0) {
             store.setRecord(level.name, time.value)
         }
+        ElMessage({
+            message: 'Win！！！',
+            type: 'success',
+        })
     } else {
         isFail.value = true
+        ElMessage({
+            message: '踩雷了呜，再接再厉~',
+            type: 'error',
+        })
     }
 }
+const blasted = ref(false)
 function onItemOpen(item,index) {
     if (!isRealStart) {
         doRealStartGame(index)
     }
     //如果是雷，游戏结束
     if (grid.value[index].isBomb){
-        //展开所有雷
+        if(!blasted.value){
+            const gridItem = gridItems.value[index]
+            //展开所有雷
+            gridItem.blast()
+            blasted.value = true
+            stopGame()
+        }
         openAllBomb()   
-        stopGame()
         return;
     }
     opened.value += 1

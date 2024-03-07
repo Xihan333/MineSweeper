@@ -48,21 +48,24 @@ function goGame(item) {
   background-size: 100% 100%;
 }.container {
   position: absolute;
-  bottom: 100px;
-  right: 200px;
+  bottom: 60px;
+  right: 100px;
 }
 .box {
   position: relative;
   margin: 10px;
 }
+.box img {
+  width: 400px;
+}
 .logo {
   position: absolute;
   margin: 10px;
-  right: 80px;
+  right: 40px;
   top: 100px;
 }
 .logo img {
-  height: 400px;
+  height: 300px;
 }
 .highlight {
   border-color: blue; /* Highlight color */
